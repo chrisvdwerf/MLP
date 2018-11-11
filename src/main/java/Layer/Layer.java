@@ -52,7 +52,7 @@ public class Layer {
 
   public Double[] backPropagate(Double[] derivativesNextLayer) {
     // calculate derivative of all perceptrons together
-    Double[] derivatesPreviousPerceptrons = new Double[perceptronsPreviousLayer];
+    double[] derivatesPreviousPerceptrons = new double[perceptronsPreviousLayer];
     for(int current = 0; current < perceptronsCurrentLayer; current++) {
       for(int previous = 0; previous < perceptronsPreviousLayer; previous++) {
           // Update derivatives of perceptrons of previous rows
@@ -62,6 +62,10 @@ public class Layer {
       }
     }
 
-    return derivatesPreviousPerceptrons;
+    Double[] toReturn = new Double[derivatesPreviousPerceptrons.length];
+    for(int d = 0; d < derivatesPreviousPerceptrons.length; d++) {
+      toReturn[d] = derivatesPreviousPerceptrons[d];
+    }
+    return toReturn;
   }
 }

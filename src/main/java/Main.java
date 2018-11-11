@@ -9,7 +9,12 @@ import java.util.List;
 public class Main {
   public static void main(String[] args) {
     Network network = getFromFile("data");
-    network.feedFowardSamples();
+
+    for(int s = 0; s < 100000; s++) {
+      if(s % 100 == 0) {
+        System.out.println("==== " + s + " - " + network.feedFowardSamples() + " ====");
+      }
+    }
   }
 
   public static Network getFromFile(String filename) {
