@@ -3,11 +3,11 @@ package Layer;
 import outputFunction.OutputFunction;
 
 public class Layer {
-  public Double[][] weights;
+  public double[][] weights;
   OutputFunction outputFunction;
 
-  private Double[] lastInput;
-  private Double[] lastOutput;
+  private double[] lastInput;
+  private double[] lastOutput;
 
   int perceptronsPreviousLayer;
   int perceptronsCurrentLayer;
@@ -20,15 +20,15 @@ public class Layer {
     this.learningRate = learningRate;
 
     this.outputFunction = outputfunction;
-    weights = new Double[perceptronsCurrentLayer][perceptronsPreviousLayer];
+    weights = new double[perceptronsCurrentLayer][perceptronsPreviousLayer];
     for(int current = 0; current < perceptronsCurrentLayer; current++) {
       for(int previous = 0; previous < perceptronsPreviousLayer; previous++) {
-        weights[current][previous] = new Double(Math.random());
+        weights[current][previous] = Math.random();
       }
     }
   }
 
-  public double calculateX(Double[] input, Double[] weights) {
+  public double calculateX(double[] input, double[] weights) {
     double X = 0;
     for(int i = 0; i < input.length; i++) {
       X += input[i] * weights[i];
@@ -36,10 +36,10 @@ public class Layer {
     return X;
   }
 
-  public Double[] feedForward(Double[] input) {
+  public double[] feedForward(double[] input) {
     assert input.length == weights[0].length;
 
-    Double[] Ylist = new Double[weights.length];
+    double[] Ylist = new double[weights.length];
     for(int current = 0; current < weights.length; current++) {
       double X = calculateX(input, weights[current]);
       Ylist[current] = outputFunction.calculateY(X);
@@ -50,7 +50,7 @@ public class Layer {
     return Ylist;
   }
 
-  public Double[] backPropagate(Double[] derivativesNextLayer) {
+  public double[] backPropagate(double[] derivativesNextLayer) {
     // calculate derivative of all perceptrons together
     double[] derivatesPreviousPerceptrons = new double[perceptronsPreviousLayer];
     for(int current = 0; current < perceptronsCurrentLayer; current++) {
@@ -62,7 +62,7 @@ public class Layer {
       }
     }
 
-    Double[] toReturn = new Double[derivatesPreviousPerceptrons.length];
+    double[] toReturn = new double[derivatesPreviousPerceptrons.length];
     for(int d = 0; d < derivatesPreviousPerceptrons.length; d++) {
       toReturn[d] = derivatesPreviousPerceptrons[d];
     }

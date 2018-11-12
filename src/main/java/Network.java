@@ -10,24 +10,24 @@ public class Network {
   private List<Layer> layers;
   private double learningRate;
 
-  private List<Double[]> features;
-  private List<Double[]> classes;
+  private List<double[]> features;
+  private List<double[]> classes;
 
 
-  public Network(List<Layer> layers, double learningRate, List<Double[]> features, List<Double[]> classes) {
+  public Network(List<Layer> layers, double learningRate, List<double[]> features, List<double[]> classes) {
     this.layers = layers;
     this.learningRate = learningRate;
     this.features = features;
     this.classes = classes;
   }
 
-  public double feedForwardSample(Double[] inputs, Double[] desired) {
-    Double[] output = layers.get(0).feedForward(inputs);
+  public double feedForwardSample(double[] inputs, double[] desired) {
+    double[] output = layers.get(0).feedForward(inputs);
     for(int l = 1; l < layers.size(); l++) {
       output = layers.get(l).feedForward(output);
     }
 
-    Double[] derivatives = new Double[desired.length];
+    double[] derivatives = new double[desired.length];
     for(int d = 0; d < derivatives.length; d++) {
       derivatives[d] = 2 * (output[d] - desired[d]);
     }
@@ -69,19 +69,19 @@ public class Network {
         layers.add(new Layer(Integer.valueOf(configuration.get(l - 1)), Integer.valueOf(configuration.get(l)), new ReLu(), learningRate));
       }
 
-      List<Double[]> features = new ArrayList<Double[]>();
-      List<Double[]> classes = new ArrayList<Double[]>();
+      List<double[]> features = new ArrayList<double[]>();
+      List<double[]> classes = new ArrayList<double[]>();
       int outputs = Integer.valueOf(configuration.get(configuration.size() - 1));
 
       List<String> items = readCSVLine(reader.readLine());
       while(items != null && items.size() > 0) {
-        Double[] featureList = new Double[inputs];
+        double[] featureList = new double[inputs];
         for(int i = 0; i < inputs; i++) {
           featureList[i] = Double.valueOf(items.get(i));
         }
         features.add(featureList);
 
-        Double[] classList = new Double[outputs];
+        double[] classList = new double[outputs];
         for(int i = 0; i < outputs; i++) {
           classList[i] = Double.valueOf(items.get(i + inputs));
         }
