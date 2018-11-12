@@ -4,6 +4,8 @@ import outputFunction.OutputFunction;
 
 public class Layer {
   public double[][] weights;
+  double[] bias;
+
   OutputFunction outputFunction;
 
   private double[] lastInput;
@@ -21,19 +23,22 @@ public class Layer {
 
     this.outputFunction = outputfunction;
     weights = new double[perceptronsCurrentLayer][perceptronsPreviousLayer];
+    bias = new double[perceptronsCurrentLayer];
+
     for(int current = 0; current < perceptronsCurrentLayer; current++) {
+      bias[current] = Math.random();
       for(int previous = 0; previous < perceptronsPreviousLayer; previous++) {
         weights[current][previous] = Math.random();
       }
     }
   }
 
-  public double calculateX(double[] input, double[] weights) {
+  public double calculateX(double[] input, double[] weights, double bias) {
     double X = 0;
     for(int i = 0; i < input.length; i++) {
       X += input[i] * weights[i];
     }
-    return X;
+    return X + bias;
   }
 
   public double[] feedForward(double[] input) {
@@ -41,7 +46,7 @@ public class Layer {
 
     double[] Ylist = new double[weights.length];
     for(int current = 0; current < weights.length; current++) {
-      double X = calculateX(input, weights[current]);
+      double X = calculateX(input, weights[current], bias[current]);
       Ylist[current] = outputFunction.calculateY(X);
     }
 
@@ -57,7 +62,7 @@ public class Layer {
       for(int previous = 0; previous < perceptronsPreviousLayer; previous++) {
           // Update derivatives of perceptrons of previous rows
           derivatesPreviousPerceptrons[previous] += derivativesNextLayer[current] * weights[current][previous];
-
+          bias[current] -= learningRate * derivativesNextLayer[current] * 1;
           weights[current][previous] -= learningRate * derivativesNextLayer[current] * lastInput[previous];
       }
     }
